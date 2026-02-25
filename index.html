@@ -10,282 +10,305 @@
 
 <body>
 
-  <body>
+  <div class="wrap">
+    <!-- Desktop -->
+    <div id="catButtons" class="catButtons"></div>
 
-    <div class="wrap">
-      <!-- Desktop -->
-      <div id="catButtons" class="catButtons"></div>
+    <!-- Mobile -->
+    <select id="catSelect" class="catSelect"></select>
+  </div>
 
-      <!-- Mobile -->
-      <select id="catSelect" class="catSelect"></select>
-    </div>
+  <div id="app"></div>
 
-    <div id="app"></div>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
+  <script>
 
-    <div id="app"></div>
+    const IMAGES = {
+      "plaques-platre": [
+        "plaque-platre.png",
+        "plaque-platre-hydro.png",
+        "plaque-platre-rf.png",
+        "plaque-platre-4AK.png",
+        "gyplat.png",
+      ],
 
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+      "bandes-a-joints": [
+        "fibatape.png",
+        "hpx-bande-de-joint-45m.png",
+        "toupret-bande-a-joint-armee.png",
+        "toupret-bande-a-joint-papier-150m.png"
+      ],
 
-    <script>
+      "poudres": [
+        "gyproc-wr-unique-25kg.png",
+        "gyproc-xpro.png",
+        "knauf-fix-finish.png",
+        "knauf-goldban.png",
+        "knauf-mp75.png",
+        "knauf-perlfix-25kg.png",
+        "knauf-snelband-25kg.png",
+        "knauf-snellgips-4kg.png",
+        "toupret-fill-finish-60.png",
+        "toupret-fix-fill-joint-45.png",
+        "toupret-fibarex.png",
+        "toupret-humi-block.png",
+        "toupret-reboucheur.png",
+        "toupret-g.png",
+      ],
 
-      const IMAGES = {
-        "plaques-platre": [
-          "plaque-platre.png",
-          "plaque-platre-hydro.png",
-          "plaque-platre-rf.png",
-          "plaque-platre-4AK.png",
-          "gyplat.png",
-        ],
+      "pates-sprays": [
+        "toupret-joint-finish.png",
+        "knauf-f2f.png",
+        "knauf-filler-pasta.png",
+        "knauf-reno-band.png",
+        "toupret-airspray-g-25kg.png",
+        "toupret-tx120-saneo.png",
+        "toupret-tx140.png",
+        "toupret-durcisseur-1l.png",
+        "toupret-durcisseur-aerosol.png",
+        "toupret-fibacryl.png",
+        "toupret-touprelex.png",
+        "toupret-spray-anti-humidite.png",
+      ],
 
-        "bandes-a-joints": [
-          "fibatape.png",
-          "hpx-bande-de-joint-45m.png",
-          "toupret-bande-a-joint-armee.png",
-          "toupret-bande-a-joint-papier-150m.png"
-        ],
+      "accessoires": [
+        "toupret-rouleau-a-enduire-180mm.png",
 
-        "poudres": [
-          "gyproc-wr-unique-25kg.png",
-          "gyproc-xpro.png",
-          "knauf-fix-finish.png",
-          "knauf-goldban.png",
-          "knauf-mp75.png",
-          "knauf-perlfix-25kg.png",
-          "knauf-snelband-25kg.png",
-          "knauf-snellgips-4kg.png",
-          "toupret-fill-finish-60.png",
-          "toupret-fix-fill-joint-45.png",
-          "toupret-fibarex.png",
-          "toupret-humi-block.png",
-          "toupret-reboucheur.png",
-          "toupret-g.png",
-        ],
+        "taloche-point-polyst-noir-27x18-PL236270.png",
+        "taloche-point-polyst-27x18-PL237271.png",
+        "palette-de-joint-droite-PL252132.png",
+        "palette-de-joint-droit-inox-230-PL090400.png",
+        "taloche-frottoir-blanc-120x250-PL266002.png",
+        "taloche-gratton-14x24cm-RM321200.png",
+        "taloche-plastique-14x8cm-PL237141.png",
+        "platresse-coins-arrondis-406x100-CP5211150.png",
+        "platresse-acier-pointue-110x400-CP400040.png",
+        "platresse-inox-dentee-12x12-SO101212.png",
+        "palette-de-platrier-alu-DS36950.png",
+        "platresse-inox-280x130mm-CP5204528.png",
+        "platresse-inox-120x305-arrondie-065-DS704888.png",
+        "platresse-inox-280mm-dents-10x10-SO101010.png",
+        "platresse-inox-280mm-dents-8x8mm-SO100808.png",
+        "platresse-inox-280-dents-6x6mm-SO100606.png",
+        "platresse-acier-280-cp220028.png",
+        "platresse-inox-0.33-35x11-ds79015.png",
+        "platresse-inox-0.3mm-ds79000.png",
+        "platresse-a-chape-cp400262.png",
+        "platresse-inox-280.png",
+        "platresse-inox-260mm-cp217426.png"
+      ],
 
-        "pates-sprays": [
-          "toupret-joint-finish.png",
-          "knauf-f2f.png",
-          "knauf-filler-pasta.png",
-          "knauf-reno-band.png",
-          "toupret-airspray-g-25kg.png",
-          "toupret-tx120-saneo.png",
-          "toupret-tx140.png",
-          "toupret-durcisseur-1l.png",
-          "toupret-durcisseur-aerosol.png",
-          "toupret-fibacryl.png",
-          "toupret-touprelex.png",
-          "toupret-spray-anti-humidite.png",
-        ],
+      "visserie": [
+        "vis-fibro-platre.png",
+        "vis-phosphatees-autof.png",
+        "vis-phosphatees-bande.png",
+        "vis-montage-rapide-pfs.png",
+      ],
 
-        "accessoires": [
-          "toupret-rouleau-a-enduire-180mm.png",
+      "cornieres": [
+        "corniere-galva.png",
+        "corniere-fil-trame.png"
+      ],
+    };
 
-          "taloche-point-polyst-noir-27x18-PL236270.png",
-          "taloche-point-polyst-27x18-PL237271.png",
-          "palette-de-joint-droite-PL252132.png",
-          "palette-de-joint-droit-inox-230-PL090400.png",
-          "taloche-frottoir-blanc-120x250-PL266002.png",
-          "taloche-gratton-14x24cm-RM321200.png",
-          "taloche-plastique-14x8cm-PL237141.png",
-          "platresse-coins-arrondis-406x100-CP5211150.png",
-          "platresse-acier-pointue-110x400-CP400040.png",
-          "platresse-inox-dentee-12x12-SO101212.png",
-          "palette-de-platrier-alu-DS36950.png",
-          "platresse-inox-280x130mm-CP5204528.png",
-          "platresse-inox-120x305-arrondie-065-DS704888.png",
-          "platresse-inox-280mm-dents-10x10-SO101010.png",
-          "platresse-inox-280mm-dents-8x8mm-SO100808.png",
-          "platresse-inox-280-dents-6x6mm-SO100606.png",
-          "platresse-acier-280-cp220028.png",
-          "platresse-inox-0.33-35x11-ds79015.png",
-          "platresse-inox-0.3mm-ds79000.png",
-          "platresse-a-chape-cp400262.png",
-          "platresse-inox-280.png",
-          "platresse-inox-260mm-cp217426.png"
-        ],
+    const DISPLAY_NAMES = {
 
-        "visserie": [
-          "vis-fibro-platre.png",
-          "vis-phosphatees-autof.png",
-          "vis-phosphatees-bande.png",
-          "vis-montage-rapide-pfs.png",
-        ],
+      "galerie/fibatape.png": "Bande à joints fibre",
+      "galerie/hpx-bande-de-joint-45m.png": "Bande à joints HPX",
+      "galerie/toupret-bande-a-joint-armee.png": "Bande à joints armée",
+      "galerie/toupret-bande-a-joint-papier-150m.png": "Bande à joints papier 150 m",
 
-        "cornieres": [
-          "corniere-galva.png",
-          "corniere-fil-trame.png"
-        ],
-      };
+      "galerie/gyplat.png": "Gyplat plâtre",
+      "galerie/gyproc-wr-unique-25kg.png": "WR Unique",
+      "galerie/gyproc-xpro.png": "X Pro",
 
-      const DISPLAY_NAMES = {
+      "galerie/knauf-f2f.png": "F2F",
+      "galerie/knauf-filler-pasta.png": "Filler Pasta",
+      "galerie/knauf-fix-finish.png": "Fix & Finish",
+      "galerie/knauf-goldban.png": "Goldband",
+      "galerie/knauf-mp75.png": "MP 75",
+      "galerie/knauf-perlfix-25kg.png": "Perlfix",
+      "galerie/knauf-reno-band.png": "Reno Band",
+      "galerie/knauf-snelband-25kg.png": "Snelband",
+      "galerie/knauf-snellgips-4kg.png": "Snelgips",
+      "galerie/toupret-fibarex.png": "Fibarex",
 
-        "galerie/fibatape.png": "Bande à joints fibre",
-        "galerie/hpx-bande-de-joint-45m.png": "Bande à joints HPX",
-        "galerie/toupret-bande-a-joint-armee.png": "Bande à joints armée",
-        "galerie/toupret-bande-a-joint-papier-150m.png": "Bande à joints papier 150 m",
+      "galerie/plaque-platre.png": "Plaque plâtre",
+      "galerie/plaque-platre-4AK.png": "Plaque de plâtre 4AK",
+      "galerie/plaque-platre-hydro.png": "Plaque plâtre hydrofuge",
+      "galerie/plaque-platre-rf.png": "Plaque plâtre résistante au feu",
 
-        "galerie/gyplat.png": "Gyplat plâtre",
-        "galerie/gyproc-wr-unique-25kg.png": "WR Unique",
-        "galerie/gyproc-xpro.png": "X Pro",
+      "galerie/toupret-airspray-g-25kg.png": "Airspray G 25 kg",
+      "galerie/toupret-durcisseur-1l.png": "Durcisseur 1 L",
+      "galerie/toupret-durcisseur-aerosol.png": "Durcisseur aérosol",
+      "galerie/toupret-fibacryl.png": "Fibacryl",
+      "galerie/toupret-fill-finish-60.png": "Fill & Finish 60",
+      "galerie/toupret-fix-fill-joint-45.png": "Fix Fill Joint 45",
+      "galerie/toupret-g.png": "Toupret G",
+      "galerie/toupret-joint-finish.png": "Joint & Finish",
+      "galerie/toupret-reboucheur.png": "Reboucheur",
+      "galerie/toupret-rouleau-a-enduire-180mm.png": "Rouleau à enduire 180 mm",
+      "galerie/toupret-tx120-saneo.png": "TX120 Sanéo",
+      "galerie/toupret-tx140.png": "TX140",
+      "galerie/toupret-touprelex.png": "Touprelex",
+      "galerie/toupret-humi-block.png": "Humi block",
+      "galerie/toupret-spray-anti-humidite.png": "Spray anti humidité",
 
-        "galerie/knauf-f2f.png": "F2F",
-        "galerie/knauf-filler-pasta.png": "Filler Pasta",
-        "galerie/knauf-fix-finish.png": "Fix & Finish",
-        "galerie/knauf-goldban.png": "Goldband",
-        "galerie/knauf-mp75.png": "MP 75",
-        "galerie/knauf-perlfix-25kg.png": "Perlfix",
-        "galerie/knauf-reno-band.png": "Reno Band",
-        "galerie/knauf-snelband-25kg.png": "Snelband",
-        "galerie/knauf-snellgips-4kg.png": "Snelgips",
-        "galerie/toupret-fibarex.png": "Fibarex",
+      "galerie/vis-fibro-platre.png": "Vis phosphatées",
+      "galerie/vis-phosphatees-autof.png": "Vis phosphatées autoforante",
+      "galerie/vis-phosphatees-bande.png": "Vis phosphatées en bande",
+      "galerie/vis-montage-rapide-pfs.png": "Vis montage rapide PFS + S",
 
-        "galerie/plaque-platre.png": "Plaque plâtre",
-        "galerie/plaque-platre-4AK.png": "Plaque de plâtre 4AK",
-        "galerie/plaque-platre-hydro.png": "Plaque plâtre hydrofuge",
-        "galerie/plaque-platre-rf.png": "Plaque plâtre résistante au feu",
+      "galerie/corniere-galva.png": "Cornière galvanisée",
+      "galerie/corniere-fil-trame.png": "Cornière fil tramé",
 
-        "galerie/toupret-airspray-g-25kg.png": "Airspray G 25 kg",
-        "galerie/toupret-durcisseur-1l.png": "Durcisseur 1 L",
-        "galerie/toupret-durcisseur-aerosol.png": "Durcisseur aérosol",
-        "galerie/toupret-fibacryl.png": "Fibacryl",
-        "galerie/toupret-fill-finish-60.png": "Fill & Finish 60",
-        "galerie/toupret-fix-fill-joint-45.png": "Fix Fill Joint 45",
-        "galerie/toupret-g.png": "Toupret G",
-        "galerie/toupret-joint-finish.png": "Joint & Finish",
-        "galerie/toupret-reboucheur.png": "Reboucheur",
-        "galerie/toupret-rouleau-a-enduire-180mm.png": "Rouleau à enduire 180 mm",
-        "galerie/toupret-tx120-saneo.png": "TX120 Sanéo",
-        "galerie/toupret-tx140.png": "TX140",
-        "galerie/toupret-touprelex.png": "Touprelex",
-        "galerie/toupret-humi-block.png": "Humi block",
-        "galerie/toupret-spray-anti-humidite.png": "Spray anti humidité",
+      "galerie/toupret-rouleau-a-enduire-180mm.png": "Rouleau à enduire 180 mm",
 
-        "galerie/vis-fibro-platre.png": "Vis phosphatées",
-        "galerie/vis-phosphatees-autof.png": "Vis phosphatées autoforante",
-        "galerie/vis-phosphatees-bande.png": "Vis phosphatées en bande",
-        "galerie/vis-montage-rapide-pfs.png": "Vis montage rapide PFS + S",
+      "galerie/taloche-point-polyst-noir-27x18-PL236270.png": "Taloche polystyrène noire 27×18 cm",
+      "galerie/taloche-point-polyst-27x18-PL237271.png": "Taloche polystyrène 27×18 cm",
 
-        "galerie/corniere-galva.png": "Cornière galvanisée",
-        "galerie/corniere-fil-trame.png": "Cornière fil tramé",
-      };
+      "galerie/palette-de-joint-droite-PL252132.png": "Palette à joint droite",
+      "galerie/palette-de-joint-droit-inox-230-PL090400.png": "Palette à joint inox 230 mm",
+      "galerie/palette-de-platrier-alu-DS36950.png": "Palette de plâtrier aluminium",
 
-      const PRODUCT_PDFS = {
+      "galerie/taloche-frottoir-blanc-120x250-PL266002.png": "Taloche frottoir blanc 120×250 mm",
+      "galerie/taloche-gratton-14x24cm-RM321200.png": "Taloche gratton 14×24 cm",
+      "galerie/taloche-plastique-14x8cm-PL237141.png": "Taloche plastique 14×8 cm",
 
-        // ===== Plaques plâtre =====
-        "galerie/plaque-platre.png": "pdf/plaque-platre.pdf",
-        "galerie/plaque-platre-hydro.png": "pdf/plaque-platre-hydro.pdf",
-        "galerie/plaque-platre-rf.png": "pdf/plaque-platre-rf.pdf",
-        "galerie/plaque-platre-4AK.png": "pdf/plaque-platre-4AK.pdf",
-        "galerie/gyplat.png": "pdf/gyplat.pdf",
+      "galerie/platresse-coins-arrondis-406x100-CP5211150.png": "Plâtresse coins arrondis 406×100 mm",
+      "galerie/platresse-acier-pointue-110x400-CP400040.png": "Plâtresse acier pointue 110×400 mm",
+      "galerie/platresse-acier-280-cp220028.png": "Plâtresse acier 280 mm",
 
-        // ===== Bandes à joints =====
-        "galerie/fibatape.png": "pdf/fibatape.pdf",
-        "galerie/hpx-bande-de-joint-45m.png": "pdf/hpx-bande-de-joint-45m.pdf",
-        "galerie/toupret-bande-a-joint-armee.png": "pdf/toupret-bande-a-joint-armee.pdf",
-        "galerie/toupret-bande-a-joint-papier-150m.png": "pdf/toupret-bande-a-joint-papier-150m.pdf",
+      "galerie/platresse-inox-dentee-12x12-SO101212.png": "Plâtresse inox dentée 12×12 mm",
+      "galerie/platresse-inox-280mm-dents-10x10-SO101010.png": "Plâtresse inox dentée 10×10 mm",
+      "galerie/platresse-inox-280mm-dents-8x8mm-SO100808.png": "Plâtresse inox dentée 8×8 mm",
+      "galerie/platresse-inox-280-dents-6x6mm-SO100606.png": "Plâtresse inox dentée 6×6 mm",
 
-        // ===== Poudres =====
-        "galerie/gyproc-wr-unique-25kg.png": "pdf/gyproc-wr-unique-25kg.pdf",
-        "galerie/gyproc-xpro.png": "pdf/gyproc-xpro.pdf",
-        "galerie/knauf-fix-finish.png": "pdf/knauf-fix-finish.pdf",
-        "galerie/knauf-goldban.png": "pdf/knauf-goldban.pdf",
-        "galerie/knauf-mp75.png": "pdf/knauf-mp75.pdf",
-        "galerie/knauf-perlfix-25kg.png": "pdf/knauf-perlfix-25kg.pdf",
-        "galerie/knauf-snelband-25kg.png": "pdf/knauf-snelband-25kg.pdf",
-        "galerie/knauf-snellgips-4kg.png": "pdf/knauf-snellgips-4kg.pdf",
-        "galerie/toupret-fill-finish-60.png": "pdf/toupret-fill-finish-60.pdf",
-        "galerie/toupret-fix-fill-joint-45.png": "pdf/toupret-fix-fill-joint-45.pdf",
-        "galerie/toupret-fibarex.png": "pdf/toupret-fibarex.pdf",
-        "galerie/toupret-humi-block.png": "pdf/toupret-humi-block.pdf",
-        "galerie/toupret-reboucheur.png": "pdf/toupret-reboucheur.pdf",
+      "galerie/platresse-inox-280x130mm-CP5204528.png": "Plâtresse inox 280×130 mm",
+      "galerie/platresse-inox-120x305-arrondie-065-DS704888.png": "Plâtresse inox arrondie 120×305 mm",
+      "galerie/platresse-inox-0.33-35x11-ds79015.png": "Plâtresse inox 0,33 mm 350×110 mm",
+      "galerie/platresse-inox-0.3mm-ds79000.png": "Plâtresse inox 0,30 mm",
+      "galerie/platresse-inox-280.png": "Plâtresse inox 280 mm",
+      "galerie/platresse-inox-260mm-cp217426.png": "Plâtresse inox 260 mm",
 
-        // ===== Pâtes & sprays =====
-        "galerie/toupret-g.png": "pdf/toupret-g.pdf",
-        "galerie/toupret-joint-finish.png": "pdf/toupret-joint-finish.pdf",
-        "galerie/knauf-f2f.png": "pdf/knauf-f2f.pdf",
-        "galerie/knauf-filler-pasta.png": "pdf/knauf-filler-pasta.pdf",
-        "galerie/knauf-reno-band.png": "pdf/knauf-reno-band.pdf",
-        "galerie/toupret-airspray-g-25kg.png": "pdf/toupret-airspray-g-25kg.pdf",
-        "galerie/toupret-tx120-saneo.png": "pdf/toupret-tx120-saneo.pdf",
-        "galerie/toupret-tx140.png": "pdf/toupret-tx140.pdf",
-        "galerie/toupret-durcisseur-1l.png": "pdf/toupret-durcisseur-1l.pdf",
-        "galerie/toupret-durcisseur-aerosol.png": "pdf/toupret-durcisseur-aerosol.pdf",
-        "galerie/toupret-fibacryl.png": "pdf/toupret-fibacryl.pdf",
-        "galerie/toupret-touprelex.png": "pdf/toupret-touprelex.pdf",
-        "galerie/toupret-spray-anti-humidite.png": "pdf/toupret-spray-anti-humidite.pdf",
+      "galerie/platresse-a-chape-cp400262.png": "Plâtresse à chape",
+    };
 
-        // ===== Accessoires =====
-        "galerie/toupret-rouleau-a-enduire-180mm.png": "pdf/toupret-rouleau-a-enduire-180mm.pdf",
+    const PRODUCT_PDFS = {
 
-        // ===== Visserie =====
-        "galerie/vis-fibro-platre.png": "pdf/vis-fibro-platre.pdf",
-        "galerie/vis-phosphatees-autof.png": "pdf/vis-phosphatees-autof.pdf",
-        "galerie/vis-phosphatees-bande.png": "pdf/vis-phosphatees-bande.pdf",
-        "galerie/vis-montage-rapide-pfs.png": "pdf/vis-montage-rapide-pfs.pdf",
-      };
+      // ===== Plaques plâtre =====
+      "galerie/plaque-platre.png": "pdf/plaque-platre.pdf",
+      "galerie/plaque-platre-hydro.png": "pdf/plaque-platre-hydro.pdf",
+      "galerie/plaque-platre-rf.png": "pdf/plaque-platre-rf.pdf",
+      "galerie/plaque-platre-4AK.png": "pdf/plaque-platre-4AK.pdf",
+      "galerie/gyplat.png": "pdf/gyplat.pdf",
 
+      // ===== Bandes à joints =====
+      "galerie/fibatape.png": "pdf/fibatape.pdf",
+      "galerie/hpx-bande-de-joint-45m.png": "pdf/hpx-bande-de-joint-45m.pdf",
+      "galerie/toupret-bande-a-joint-armee.png": "pdf/toupret-bande-a-joint-armee.pdf",
+      "galerie/toupret-bande-a-joint-papier-150m.png": "pdf/toupret-bande-a-joint-papier-150m.pdf",
 
+      // ===== Poudres =====
+      "galerie/gyproc-wr-unique-25kg.png": "pdf/gyproc-wr-unique-25kg.pdf",
+      "galerie/gyproc-xpro.png": "pdf/gyproc-xpro.pdf",
+      "galerie/knauf-fix-finish.png": "pdf/knauf-fix-finish.pdf",
+      "galerie/knauf-goldban.png": "pdf/knauf-goldban.pdf",
+      "galerie/knauf-mp75.png": "pdf/knauf-mp75.pdf",
+      "galerie/knauf-perlfix-25kg.png": "pdf/knauf-perlfix-25kg.pdf",
+      "galerie/knauf-snelband-25kg.png": "pdf/knauf-snelband-25kg.pdf",
+      "galerie/knauf-snellgips-4kg.png": "pdf/knauf-snellgips-4kg.pdf",
+      "galerie/toupret-fill-finish-60.png": "pdf/toupret-fill-finish-60.pdf",
+      "galerie/toupret-fix-fill-joint-45.png": "pdf/toupret-fix-fill-joint-45.pdf",
+      "galerie/toupret-fibarex.png": "pdf/toupret-fibarex.pdf",
+      "galerie/toupret-humi-block.png": "pdf/toupret-humi-block.pdf",
+      "galerie/toupret-reboucheur.png": "pdf/toupret-reboucheur.pdf",
 
-      /** Tailles fallback (si aucune taille n’est trouvée dans l’Excel) */
-      const CAT_SIZES = {
-        "liants": ["10 kg", "25 kg", "35 kg"],
-        "granulats": ["25 kg", "500 kg", "1 T"]
-      };
+      // ===== Pâtes & sprays =====
+      "galerie/toupret-g.png": "pdf/toupret-g.pdf",
+      "galerie/toupret-joint-finish.png": "pdf/toupret-joint-finish.pdf",
+      "galerie/knauf-f2f.png": "pdf/knauf-f2f.pdf",
+      "galerie/knauf-filler-pasta.png": "pdf/knauf-filler-pasta.pdf",
+      "galerie/knauf-reno-band.png": "pdf/knauf-reno-band.pdf",
+      "galerie/toupret-airspray-g-25kg.png": "pdf/toupret-airspray-g-25kg.pdf",
+      "galerie/toupret-tx120-saneo.png": "pdf/toupret-tx120-saneo.pdf",
+      "galerie/toupret-tx140.png": "pdf/toupret-tx140.pdf",
+      "galerie/toupret-durcisseur-1l.png": "pdf/toupret-durcisseur-1l.pdf",
+      "galerie/toupret-durcisseur-aerosol.png": "pdf/toupret-durcisseur-aerosol.pdf",
+      "galerie/toupret-fibacryl.png": "pdf/toupret-fibacryl.pdf",
+      "galerie/toupret-touprelex.png": "pdf/toupret-touprelex.pdf",
+      "galerie/toupret-spray-anti-humidite.png": "pdf/toupret-spray-anti-humidite.pdf",
 
-      function normalizeSize(s) {
-        return String(s || "").trim();
-      }
+      // ===== Accessoires =====
+      "galerie/toupret-rouleau-a-enduire-180mm.png": "pdf/toupret-rouleau-a-enduire-180mm.pdf",
 
-      function getSizeOptions(cat) {
-        return CAT_SIZES[cat] || [""];
-      }
-
-      /** ============
-       *  PRIX / STOCK
-       *  ============ */
-      const PRICE_MANIFEST_URL = "prix/manifest.json";
-
-      let PRICE_MAP = Object.create(null);
-
-      let STOCK_MAP = Object.create(null);
-
-      let SIZES_BY_PATH = Object.create(null);
-
-      // UI
-      const app = document.getElementById("app");
-      const catButtons = document.getElementById("catButtons");
-      const catSelect = document.getElementById("catSelect");
-
-      const CAT_ICONS = {
-        "plaques-platre": "vignettes-boutons/plaques-platre.png",
-        "bandes-a-joints": "vignettes-boutons/bandes-a-joints.png",
-        "poudres": "vignettes-boutons/sacs.png",
-        "pates-sprays": "vignettes-boutons/seaux.png",
-        "accessoires": "vignettes-boutons/accessoires.png",
-        "visserie": "vignettes-boutons/vis-phos.png",
-        "cornieres": "vignettes-boutons/cornieres.png"
-      };
+      // ===== Visserie =====
+      "galerie/vis-fibro-platre.png": "pdf/vis-fibro-platre.pdf",
+      "galerie/vis-phosphatees-autof.png": "pdf/vis-phosphatees-autof.pdf",
+      "galerie/vis-phosphatees-bande.png": "pdf/vis-phosphatees-bande.pdf",
+      "galerie/vis-montage-rapide-pfs.png": "pdf/vis-montage-rapide-pfs.pdf",
+    };
 
 
-      const CATEGORY_UI = [
-        { id: "plaques-platre", label: "Plaques de plâtre" },
-        { id: "bandes-a-joints", label: "Bandes à joints" },
-        { id: "poudres", label: "Poudres" },
-        { id: "pates-sprays", label: "Pâtes & sprays" },
-        { id: "accessoires", label: "Accessoires" },
-        { id: "visserie", label: "Visserie" },
-        { id: "cornieres", label: "Cornières" },
-      ];
+
+    /** Tailles fallback (si aucune taille n’est trouvée dans l’Excel) */
+    const CAT_SIZES = {};
+
+    function normalizeSize(s) {
+      return String(s || "").trim();
+    }
+
+    function getSizeOptions(cat) {
+      return CAT_SIZES[cat] || [""];
+    }
+
+    /** ============
+     *  PRIX / STOCK
+     *  ============ */
+    const PRICE_MANIFEST_URL = "prix/manifest.json";
+
+    let PRICE_MAP = Object.create(null);
+
+    let STOCK_MAP = Object.create(null);
+
+    let SIZES_BY_PATH = Object.create(null);
+
+    // UI
+    const app = document.getElementById("app");
+    const catButtons = document.getElementById("catButtons");
+    const catSelect = document.getElementById("catSelect");
+
+    const CAT_ICONS = {
+      "plaques-platre": "vignettes-boutons/plaques-platre.png",
+      "bandes-a-joints": "vignettes-boutons/bandes-a-joints.png",
+      "poudres": "vignettes-boutons/sacs.png",
+      "pates-sprays": "vignettes-boutons/seaux.png",
+      "accessoires": "vignettes-boutons/accessoires.png",
+      "visserie": "vignettes-boutons/vis-phos.png",
+      "cornieres": "vignettes-boutons/cornieres.png"
+    };
 
 
-      const allowedCats = new Set(Object.keys(IMAGES));
-      const categories = CATEGORY_UI.filter(c => allowedCats.has(c.id));
-      let activeCat = categories[0]?.id || "__none__";
+    const CATEGORY_UI = [
+      { id: "plaques-platre", label: "Plaques de plâtre" },
+      { id: "bandes-a-joints", label: "Bandes à joints" },
+      { id: "poudres", label: "Poudres" },
+      { id: "pates-sprays", label: "Pâtes & sprays" },
+      { id: "accessoires", label: "Accessoires" },
+      { id: "visserie", label: "Visserie" },
+      { id: "cornieres", label: "Cornières" },
+    ];
 
-      function buildCatButtons() {
-        catButtons.innerHTML = categories.map(c => {
-          const icon = CAT_ICONS[c.id];
-          return `
+
+    const allowedCats = new Set(Object.keys(IMAGES));
+    const categories = CATEGORY_UI.filter(c => allowedCats.has(c.id));
+    let activeCat = categories[0]?.id || "__none__";
+
+    function buildCatButtons() {
+      catButtons.innerHTML = categories.map(c => {
+        const icon = CAT_ICONS[c.id];
+        return `
           <button class="catBtn ${c.id === activeCat ? 'active' : ''}"
                   data-cat="${c.id}" type="button">
             ${icon ? `
@@ -296,281 +319,281 @@
             <span>${c.label}</span>
           </button>
         `;
-        }).join("");
+      }).join("");
 
-        catButtons.querySelectorAll("button[data-cat]").forEach(btn => {
-          btn.addEventListener("click", () => {
-            activeCat = btn.dataset.cat;
-            syncCategoryUI();
-            render();
-          });
-        });
-      }
-
-      function buildCatSelect() {
-        catSelect.innerHTML = categories
-          .map(c => `<option value="${c.id}">${c.label}</option>`)
-          .join("");
-
-        catSelect.addEventListener("change", () => {
-          activeCat = catSelect.value;
+      catButtons.querySelectorAll("button[data-cat]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeCat = btn.dataset.cat;
           syncCategoryUI();
           render();
         });
-      }
+      });
+    }
 
-      function syncCategoryUI() {
-        if (catSelect) catSelect.value = activeCat;
-        document.querySelectorAll("#catButtons .catBtn").forEach(b => {
-          b.classList.toggle("active", b.dataset.cat === activeCat);
-        });
-        fitCategoryButtons();
-      }
+    function buildCatSelect() {
+      catSelect.innerHTML = categories
+        .map(c => `<option value="${c.id}">${c.label}</option>`)
+        .join("");
 
-      function fitCategoryButtons() {
-        if (!catButtons) return;
-        if (getComputedStyle(catButtons).display === "none") return;
+      catSelect.addEventListener("change", () => {
+        activeCat = catSelect.value;
+        syncCategoryUI();
+        render();
+      });
+    }
 
-        const root = document.documentElement;
-        const presets = [
-          { font: 12, py: 6, px: 10, gap: 6 },
-          { font: 11, py: 5, px: 9, gap: 6 },
-          { font: 10, py: 5, px: 8, gap: 5 },
-          { font: 9, py: 4, px: 7, gap: 5 }
-        ];
+    function syncCategoryUI() {
+      if (catSelect) catSelect.value = activeCat;
+      document.querySelectorAll("#catButtons .catBtn").forEach(b => {
+        b.classList.toggle("active", b.dataset.cat === activeCat);
+      });
+      fitCategoryButtons();
+    }
 
-        const apply = (p) => {
-          root.style.setProperty("--cat-font", p.font + "px");
-          root.style.setProperty("--cat-py", p.py + "px");
-          root.style.setProperty("--cat-px", p.px + "px");
-          root.style.setProperty("--cat-gap", p.gap + "px");
-        };
+    function fitCategoryButtons() {
+      if (!catButtons) return;
+      if (getComputedStyle(catButtons).display === "none") return;
 
-        const fits = () => catButtons.scrollWidth <= catButtons.clientWidth + 1;
+      const root = document.documentElement;
+      const presets = [
+        { font: 12, py: 6, px: 10, gap: 6 },
+        { font: 11, py: 5, px: 9, gap: 6 },
+        { font: 10, py: 5, px: 8, gap: 5 },
+        { font: 9, py: 4, px: 7, gap: 5 }
+      ];
 
-        catButtons.style.overflowX = "hidden";
-        apply(presets[0]);
+      const apply = (p) => {
+        root.style.setProperty("--cat-font", p.font + "px");
+        root.style.setProperty("--cat-py", p.py + "px");
+        root.style.setProperty("--cat-px", p.px + "px");
+        root.style.setProperty("--cat-gap", p.gap + "px");
+      };
+
+      const fits = () => catButtons.scrollWidth <= catButtons.clientWidth + 1;
+
+      catButtons.style.overflowX = "hidden";
+      apply(presets[0]);
+      if (fits()) return;
+
+      for (let i = 1; i < presets.length; i++) {
+        apply(presets[i]);
         if (fits()) return;
+      }
 
-        for (let i = 1; i < presets.length; i++) {
-          apply(presets[i]);
-          if (fits()) return;
+      catButtons.style.overflowX = "auto";
+      catButtons.style.webkitOverflowScrolling = "touch";
+    }
+
+    function getKey(path, taille) {
+      return `${path}|${normalizeSize(taille)}`;
+    }
+
+    function stockLabelFor(key) {
+      const v = Number(STOCK_MAP[key]);
+      return (v > 0) ? "✅ En stock" : "⚠️ Rupture";
+    }
+
+    function getStoredSize(key, fallback) {
+      try {
+        const v = localStorage.getItem("size:" + key);
+        return v ? v : fallback;
+      } catch { return fallback; }
+    }
+
+    function setStoredSize(key, val) {
+      try { localStorage.setItem("size:" + key, val); } catch { }
+    }
+
+    function pickInitialSize(pathKey, options) {
+      const stored = getStoredSize(pathKey, "");
+      if (stored && options.includes(stored)) {
+        const ks = getKey(pathKey, stored);
+        const vs = Number(STOCK_MAP[ks]);
+        if (vs > 0) return stored;
+      }
+
+      for (const opt of options) {
+        const k = getKey(pathKey, opt);
+        const v = Number(STOCK_MAP[k]);
+        if (v > 0) return opt;
+      }
+
+      return options[0] || "";
+    }
+
+    async function fetchJson(url) {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status} sur ${url}`);
+      return res.json();
+    }
+
+    async function fetchXlsxAsPriceMap(xlsxUrl) {
+      const res = await fetch(xlsxUrl, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status} sur ${xlsxUrl}`);
+
+      const buf = await res.arrayBuffer();
+      const wb = XLSX.read(buf, { type: "array" });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      if (!ws) throw new Error(`Feuille Excel introuvable dans ${xlsxUrl}`);
+
+      const rows = XLSX.utils.sheet_to_json(ws, { defval: "", raw: false });
+
+      const map = Object.create(null);
+      const stock = Object.create(null);
+
+      for (const r of rows) {
+        let path = String(r.path || r.Path || r.PATH || "").trim();
+        const taille = normalizeSize(r.taille ?? r.Taille ?? r.TAILLE ?? "");
+        let price = r.prix_tvac ?? r.Prix_TVAC ?? r.PRIX_TVAC ?? r.prix ?? r.Prix ?? "";
+
+        let stockRaw =
+          r.disponible ??
+          r.Disponible ??
+          r.DISPO ??
+          r.dispo ??
+          r.stock ??
+          r.Stock ??
+          "";
+
+        let stockVal = String(stockRaw).trim() === ""
+          ? 0
+          : Number(String(stockRaw).replace(",", "."));
+
+        if (!Number.isFinite(stockVal)) stockVal = 0;
+        if (!path) continue;
+
+        path = path.replaceAll("\\", "/").replace(/^\.?\//, "");
+
+        if (typeof price === "string") price = price.replace(",", ".").trim();
+        const num = Number(price);
+
+        if (Number.isFinite(num)) {
+          const k = getKey(path, taille);
+          map[k] = num;
+          stock[k] = stockVal;
         }
-
-        catButtons.style.overflowX = "auto";
-        catButtons.style.webkitOverflowScrolling = "touch";
       }
 
-      function getKey(path, taille) {
-        return `${path}|${normalizeSize(taille)}`;
+      return { map, stock };
+    }
+
+    function buildSizesByPath(priceMap) {
+      const idx = Object.create(null);
+
+      for (const k of Object.keys(priceMap)) {
+        const sep = k.indexOf("|");
+        if (sep === -1) continue;
+
+        const pathKey = k.slice(0, sep);
+        const taille = normalizeSize(k.slice(sep + 1));
+        if (!pathKey || !taille) continue;
+
+        if (/\.(png|jpg|jpeg|webp)$/i.test(taille)) continue;
+        (idx[pathKey] ||= []).push(taille);
       }
 
-      function stockLabelFor(key) {
-        const v = Number(STOCK_MAP[key]);
-        return (v > 0) ? "✅ En stock" : "⚠️ Rupture";
+      const collator = new Intl.Collator("fr", { numeric: true, sensitivity: "base" });
+
+      for (const p of Object.keys(idx)) {
+        const unique = Array.from(new Set(idx[p]));
+        const allNumeric = unique.every(v => /^\d+(?:[.,]\d+)?$/.test(String(v).trim()));
+
+        idx[p] = allNumeric
+          ? unique.sort((a, b) => Number(String(a).replace(",", ".")) - Number(String(b).replace(",", ".")))
+          : unique.sort((a, b) => collator.compare(String(a), String(b)));
       }
 
-      function getStoredSize(key, fallback) {
-        try {
-          const v = localStorage.getItem("size:" + key);
-          return v ? v : fallback;
-        } catch { return fallback; }
-      }
+      return idx;
+    }
 
-      function setStoredSize(key, val) {
-        try { localStorage.setItem("size:" + key, val); } catch { }
-      }
+    async function loadPricesFromFolder() {
+      try {
+        const files = await fetchJson(PRICE_MANIFEST_URL);
+        if (!Array.isArray(files) || files.length === 0) throw new Error("manifest vide ou invalide");
 
-      function pickInitialSize(pathKey, options) {
-        const stored = getStoredSize(pathKey, "");
-        if (stored && options.includes(stored)) {
-          const ks = getKey(pathKey, stored);
-          const vs = Number(STOCK_MAP[ks]);
-          if (vs > 0) return stored;
-        }
+        const merged = Object.create(null);
+        const mergedStock = Object.create(null);
 
-        for (const opt of options) {
-          const k = getKey(pathKey, opt);
-          const v = Number(STOCK_MAP[k]);
-          if (v > 0) return opt;
-        }
-
-        return options[0] || "";
-      }
-
-      async function fetchJson(url) {
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status} sur ${url}`);
-        return res.json();
-      }
-
-      async function fetchXlsxAsPriceMap(xlsxUrl) {
-        const res = await fetch(xlsxUrl, { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status} sur ${xlsxUrl}`);
-
-        const buf = await res.arrayBuffer();
-        const wb = XLSX.read(buf, { type: "array" });
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        if (!ws) throw new Error(`Feuille Excel introuvable dans ${xlsxUrl}`);
-
-        const rows = XLSX.utils.sheet_to_json(ws, { defval: "", raw: false });
-
-        const map = Object.create(null);
-        const stock = Object.create(null);
-
-        for (const r of rows) {
-          let path = String(r.path || r.Path || r.PATH || "").trim();
-          const taille = normalizeSize(r.taille ?? r.Taille ?? r.TAILLE ?? "");
-          let price = r.prix_tvac ?? r.Prix_TVAC ?? r.PRIX_TVAC ?? r.prix ?? r.Prix ?? "";
-
-          let stockRaw =
-            r.disponible ??
-            r.Disponible ??
-            r.DISPO ??
-            r.dispo ??
-            r.stock ??
-            r.Stock ??
-            "";
-
-          let stockVal = String(stockRaw).trim() === ""
-            ? 0
-            : Number(String(stockRaw).replace(",", "."));
-
-          if (!Number.isFinite(stockVal)) stockVal = 0;
-          if (!path) continue;
-
-          path = path.replaceAll("\\", "/").replace(/^\.?\//, "");
-
-          if (typeof price === "string") price = price.replace(",", ".").trim();
-          const num = Number(price);
-
-          if (Number.isFinite(num)) {
-            const k = getKey(path, taille);
-            map[k] = num;
-            stock[k] = stockVal;
+        for (const fname of files) {
+          const url = `prix/${fname}`;
+          try {
+            const { map, stock } = await fetchXlsxAsPriceMap(url);
+            for (const k of Object.keys(map)) merged[k] = map[k];
+            for (const k of Object.keys(stock)) mergedStock[k] = stock[k];
+          } catch (e) {
+            console.warn("Fichier prix ignoré:", url, e);
           }
         }
 
-        return { map, stock };
+        PRICE_MAP = merged;
+        STOCK_MAP = mergedStock;
+        SIZES_BY_PATH = buildSizesByPath(PRICE_MAP);
+
+      } catch (e) {
+        PRICE_MAP = Object.create(null);
+        STOCK_MAP = Object.create(null);
+        SIZES_BY_PATH = Object.create(null);
+        console.error(e);
+      }
+    }
+
+    function formatPrice(v) {
+      if (!Number.isFinite(v)) return "";
+      return (Math.round(v * 100) / 100).toFixed(2);
+    }
+
+    function render() {
+      const cat = activeCat;
+      const priceUnitLabel = (cat === "plaques-platre") ? "Tvac / m²" : "Tvac";
+
+      if (!cat || !IMAGES[cat]) {
+        app.innerHTML = `<p class="muted">Aucune catégorie à afficher.</p>`;
+        sendHeightSoon();
+        return;
       }
 
-      function buildSizesByPath(priceMap) {
-        const idx = Object.create(null);
-
-        for (const k of Object.keys(priceMap)) {
-          const sep = k.indexOf("|");
-          if (sep === -1) continue;
-
-          const pathKey = k.slice(0, sep);
-          const taille = normalizeSize(k.slice(sep + 1));
-          if (!pathKey || !taille) continue;
-
-          if (/\.(png|jpg|jpeg|webp)$/i.test(taille)) continue;
-          (idx[pathKey] ||= []).push(taille);
-        }
-
-        const collator = new Intl.Collator("fr", { numeric: true, sensitivity: "base" });
-
-        for (const p of Object.keys(idx)) {
-          const unique = Array.from(new Set(idx[p]));
-          const allNumeric = unique.every(v => /^\d+(?:[.,]\d+)?$/.test(String(v).trim()));
-
-          idx[p] = allNumeric
-            ? unique.sort((a, b) => Number(String(a).replace(",", ".")) - Number(String(b).replace(",", ".")))
-            : unique.sort((a, b) => collator.compare(String(a), String(b)));
-        }
-
-        return idx;
+      const files = (IMAGES[cat] || []);
+      if (!files.length) {
+        app.innerHTML = `<p class="muted">Aucune image à afficher.</p>`;
+        sendHeightSoon();
+        return;
       }
 
-      async function loadPricesFromFolder() {
-        try {
-          const files = await fetchJson(PRICE_MANIFEST_URL);
-          if (!Array.isArray(files) || files.length === 0) throw new Error("manifest vide ou invalide");
+      let html = `<div class="grid">`;
 
-          const merged = Object.create(null);
-          const mergedStock = Object.create(null);
+      for (const f of files) {
+        const pathKey = `galerie/${f}`;
+        const src = `galerie/${encodeURIComponent(f)}`;
 
-          for (const fname of files) {
-            const url = `prix/${fname}`;
-            try {
-              const { map, stock } = await fetchXlsxAsPriceMap(url);
-              for (const k of Object.keys(map)) merged[k] = map[k];
-              for (const k of Object.keys(stock)) mergedStock[k] = stock[k];
-            } catch (e) {
-              console.warn("Fichier prix ignoré:", url, e);
-            }
-          }
+        const label = (DISPLAY_NAMES[pathKey] ?? f)
+          .replace(/\.(png|jpg|jpeg|webp)$/i, "")
+          .replace(/-/g, " ");
 
-          PRICE_MAP = merged;
-          STOCK_MAP = mergedStock;
-          SIZES_BY_PATH = buildSizesByPath(PRICE_MAP);
+        let options = (SIZES_BY_PATH[pathKey] && SIZES_BY_PATH[pathKey].length)
+          ? SIZES_BY_PATH[pathKey]
+          : getSizeOptions(cat);
 
-        } catch (e) {
-          PRICE_MAP = Object.create(null);
-          STOCK_MAP = Object.create(null);
-          SIZES_BY_PATH = Object.create(null);
-          console.error(e);
-        }
-      }
+        let currentSize = pickInitialSize(pathKey, options);
+        if (currentSize && !options.includes(currentSize)) currentSize = options[0] || "";
 
-      function formatPrice(v) {
-        if (!Number.isFinite(v)) return "";
-        return (Math.round(v * 100) / 100).toFixed(2);
-      }
+        setStoredSize(pathKey, currentSize);
 
-      function render() {
-        const cat = activeCat;
-        const priceUnitLabel = (cat === "plaques-platre") ? "Tvac / m²" : "Tvac";
+        const k = getKey(pathKey, currentSize);
+        const price = PRICE_MAP[k];
+        const stockText = stockLabelFor(k);
 
-        if (!cat || !IMAGES[cat]) {
-          app.innerHTML = `<p class="muted">Aucune catégorie à afficher.</p>`;
-          sendHeightSoon();
-          return;
-        }
+        const selectId = "s_" + btoa(pathKey).replace(/=+/g, '');
+        const stockId = "st_" + btoa(pathKey).replace(/=+/g, '');
 
-        const files = (IMAGES[cat] || []);
-        if (!files.length) {
-          app.innerHTML = `<p class="muted">Aucune image à afficher.</p>`;
-          sendHeightSoon();
-          return;
-        }
-
-        let html = `<div class="grid">`;
-
-        for (const f of files) {
-          const pathKey = `galerie/${f}`;
-          const src = `galerie/${encodeURIComponent(f)}`;
-
-          const label = (DISPLAY_NAMES[pathKey] ?? f)
-            .replace(/\.(png|jpg|jpeg|webp)$/i, "")
-            .replace(/-/g, " ");
-
-          let options = (SIZES_BY_PATH[pathKey] && SIZES_BY_PATH[pathKey].length)
-            ? SIZES_BY_PATH[pathKey]
-            : getSizeOptions(cat);
-
-          let currentSize = pickInitialSize(pathKey, options);
-          if (currentSize && !options.includes(currentSize)) currentSize = options[0] || "";
-
-          setStoredSize(pathKey, currentSize);
-
-          const k = getKey(pathKey, currentSize);
-          const price = PRICE_MAP[k];
-          const stockText = stockLabelFor(k);
-
-          const selectId = "s_" + btoa(pathKey).replace(/=+/g, '');
-          const stockId = "st_" + btoa(pathKey).replace(/=+/g, '');
-
-          html += `
+        html += `
           <figure>
   <figcaption>
   ${PRODUCT_PDFS[pathKey]
-              ? `<a href="${PRODUCT_PDFS[pathKey]}" target="_blank" rel="noopener" class="titleLink">
+            ? `<a href="${PRODUCT_PDFS[pathKey]}" target="_blank" rel="noopener" class="titleLink">
          ${label} <span class="pdfTag">PDF</span>
        </a>`
-              : label
-            }
+            : label
+          }
 </figcaption>
 
 
@@ -595,39 +618,39 @@
             <div class="price">
               <div class="price-label">${priceUnitLabel}</div>
               ${price !== undefined
-              ? `<div class="price-amount">
+            ? `<div class="price-amount">
                     <span class="int">${formatPrice(price).split(".")[0]}</span>
                     <span class="dec">${formatPrice(price).split(".")[1] || "00"}</span>
                     <span class="eur">€</span>
                   </div>`
-              : `<div class="price-amount muted">—</div>`
-            }
+            : `<div class="price-amount muted">—</div>`
+          }
             </div>
           </figure>
         `;
-        }
+      }
 
-        html += `</div>`;
-        app.innerHTML = html;
+      html += `</div>`;
+      app.innerHTML = html;
 
-        document.querySelectorAll('select[data-path]').forEach(sel => {
-          sel.addEventListener("change", () => {
-            const pathKey = sel.dataset.path;
-            const taille = normalizeSize(sel.value);
-            setStoredSize(pathKey, taille);
+      document.querySelectorAll('select[data-path]').forEach(sel => {
+        sel.addEventListener("change", () => {
+          const pathKey = sel.dataset.path;
+          const taille = normalizeSize(sel.value);
+          setStoredSize(pathKey, taille);
 
-            const k = getKey(pathKey, taille);
+          const k = getKey(pathKey, taille);
 
-            // prix
-            const price = PRICE_MAP[k];
-            const figure = sel.closest("figure");
-            const priceBox = figure ? figure.querySelector(".price") : null;
+          // prix
+          const price = PRICE_MAP[k];
+          const figure = sel.closest("figure");
+          const priceBox = figure ? figure.querySelector(".price") : null;
 
-            if (priceBox) {
-              if (price !== undefined) {
-                const s = formatPrice(price);
-                const [intPart, decPart = "00"] = s.split(".");
-                priceBox.innerHTML = `
+          if (priceBox) {
+            if (price !== undefined) {
+              const s = formatPrice(price);
+              const [intPart, decPart = "00"] = s.split(".");
+              priceBox.innerHTML = `
                 <div class="price-label">${priceUnitLabel}</div>
                 <div class="price-amount">
                   <span class="int">${intPart}</span>
@@ -635,64 +658,64 @@
                   <span class="eur">€</span>
                 </div>
               `;
-              } else {
-                priceBox.innerHTML = `
+            } else {
+              priceBox.innerHTML = `
                 <div class="price-label">${priceUnitLabel}</div>
                 <div class="price-amount muted">—</div>
               `;
-              }
             }
+          }
 
-            // stock
-            const stockId = sel.dataset.stockId;
-            const st = document.getElementById(stockId);
-            if (st) st.textContent = stockLabelFor(k);
+          // stock
+          const stockId = sel.dataset.stockId;
+          const st = document.getElementById(stockId);
+          if (st) st.textContent = stockLabelFor(k);
 
-            sendHeightSoon();
-          });
-        });
-
-        sendHeightSoon();
-      }
-
-      (async function init() {
-        await loadPricesFromFolder();
-        buildCatButtons();
-        buildCatSelect();
-        syncCategoryUI();
-        render();
-
-        window.addEventListener("resize", () => {
-          fitCategoryButtons();
           sendHeightSoon();
         });
-      })();
-    </script>
+      });
 
-    <script>
-      function sendHeight() {
-        const h = Math.max(
-          document.body ? document.body.scrollHeight : 0,
-          document.documentElement ? document.documentElement.scrollHeight : 0
-        );
+      sendHeightSoon();
+    }
 
-        if (window.parent !== window) {
-          window.parent.postMessage({ type: "resize", height: h }, "*");
-        }
+    (async function init() {
+      await loadPricesFromFolder();
+      buildCatButtons();
+      buildCatSelect();
+      syncCategoryUI();
+      render();
+
+      window.addEventListener("resize", () => {
+        fitCategoryButtons();
+        sendHeightSoon();
+      });
+    })();
+  </script>
+
+  <script>
+    function sendHeight() {
+      const h = Math.max(
+        document.body ? document.body.scrollHeight : 0,
+        document.documentElement ? document.documentElement.scrollHeight : 0
+      );
+
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: "resize", height: h }, "*");
       }
+    }
 
-      function sendHeightSoon() {
-        requestAnimationFrame(() => {
-          sendHeight();
-          setTimeout(sendHeight, 150);
-          setTimeout(sendHeight, 600);
-        });
-      }
+    function sendHeightSoon() {
+      requestAnimationFrame(() => {
+        sendHeight();
+        setTimeout(sendHeight, 150);
+        setTimeout(sendHeight, 600);
+      });
+    }
 
-      window.addEventListener("load", sendHeightSoon);
-      window.addEventListener("resize", sendHeightSoon);
-    </script>
+    window.addEventListener("load", sendHeightSoon);
+    window.addEventListener("resize", sendHeightSoon);
+  </script>
 
-  </body>
+</body>
 
 </html>
